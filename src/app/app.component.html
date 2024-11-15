@@ -1,0 +1,52 @@
+<h1>Список пользователей</h1>
+<button (click)="addUser()">Добавить</button>
+<table>
+  <thead>
+    <tr>
+      <td>Id</td>
+      <td>Имя</td>
+      <td>Возраст</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    @for(user of users; track $index) {
+    <tr>
+      <ng-template
+        [ngTemplateOutlet]="loadTemplate(user)"
+        [ngTemplateOutletContext]="{ $implicit: user }"
+      >
+      </ng-template>
+    </tr>
+    }
+  </tbody>
+</table>
+<div>{{ statusMessage }}</div>
+
+<!--шаблон для чтения-->
+<ng-template #readOnlyTemplate let-user>
+  <td>{{ user.id }}</td>
+  <td>{{ user.name }}</td>
+  <td>{{ user.age }}</td>
+  <td>
+    <button (click)="editUser(user)">Изменить</button>
+    <button (click)="deleteUser(user)">Удалить</button>
+  </td>
+</ng-template>
+
+<!--шаблон для редактирования-->
+<ng-template #editTemplate>
+  <td>
+    <input type="number" [(ngModel)]="editedUser.id" readonly disabled />
+  </td>
+  <td>
+    <input [(ngModel)]="editedUser.name" />
+  </td>
+  <td>
+    <input type="number" [(ngModel)]="editedUser.age" />
+  </td>
+  <td>
+    <button (click)="saveUser()">Сохранить</button>
+    <button (click)="cancel()">Отмена</button>
+  </td>
+</ng-template>
